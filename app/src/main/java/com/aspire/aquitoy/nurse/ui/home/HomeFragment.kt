@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -35,6 +36,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private val locationService: LocationService = LocationService()
 
+    private lateinit var coordinates: LatLng
     private var start: String = ""
     private var end: String = ""
 
@@ -58,15 +60,25 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        createMapFragment()
-        initListeners()
+        initUi()
 
         return root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun initUi() {
+        createMapFragment()
+        initListeners()
+    }
+
     private fun initListeners() {
         _binding!!.btnService.setOnClickListener {
-            start = ""
+            start = "${coordinates.longitude}, ${coordinates.latitude}"
+            Toast.makeText(requireContext(), "coordenadas: $start", Toast.LENGTH_SHORT).show()
             end = ""
             poly?.remove()
             if (poly != null) {
@@ -74,9 +86,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             }
             if (::map.isInitialized) {
                 map.setOnMapClickListener {
-                    if (start.isEmpty()) {
-                        start = "${it.longitude}, ${it.latitude}"
-                    } else if (end.isEmpty()){
+                    if (end.isEmpty()){
                         end = "${it.longitude}, ${it.latitude}"
                     } else {
                         createRoute()
@@ -84,11 +94,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 }
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun createMapFragment() {
@@ -100,7 +105,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         lifecycleScope.launch {
             val result = locationService.getUserLocation(requireContext())
             result?.let { location ->
-                val coordinates = LatLng(location.latitude, location.longitude)
+                coordinates = LatLng(location.latitude, location. longitude)
                 map.animateCamera(
                     CameraUpdateFactory.newLatLngZoom(coordinates, 18f),
                     4000,
