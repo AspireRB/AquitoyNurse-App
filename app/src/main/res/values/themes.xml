@@ -1,0 +1,105 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Aquitoy" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/foreground</item>
+        <item name="colorPrimaryVariant">@color/foreground</item>
+        <item name="colorOnPrimary">@color/pink</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/gray</item>
+        <item name="colorSecondaryVariant">@color/gray2</item>
+        <item name="colorOnSecondary">@color/gray3</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/background</item>
+    </style>
+
+    <style name="Theme.Aquitoy" parent="Base.Theme.Aquitoy" />
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/animated_logo</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="postSplashScreenTheme">@style/Base.Theme.Aquitoy</item>
+    </style>
+
+    <style name="Theme.SplashScreen.IconBackground" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenIconBackgroundColor">@color/background</item>
+    </style>
+
+    <style name="CaptionText" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/foreground</item>
+        <item name="android:gravity">center</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="BodyText" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:gravity">center</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="TitleText" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:gravity">center</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="PrimaryButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textSize">12sp</item>
+        <item name="textAllCaps">true</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:textColor">@color/background </item>
+        <item name="android:gravity">center</item>
+        <item name="backgroundTint">@color/foreground</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="SecondaryButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeColor">@color/foreground</item>
+        <item name="android:textSize">12sp</item>
+        <item name="textAllCaps">true</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:textColor">@color/foreground</item>
+        <item name="android:gravity">center</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="TertiaryButton" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">12sp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:textColor">@color/foreground</item>
+        <item name="android:gravity">center</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="FormEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="singleLine">true</item>
+        <item name="maxLines">1</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="FormTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:gravity">center_vertical</item>
+        <item name="errorEnabled">true</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="boxStrokeColor">@color/foreground</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="errorTextColor">@color/error</item>
+        <item name="hintTextColor">@color/foreground</item>
+    </style>
+
+</resources>

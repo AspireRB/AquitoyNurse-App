@@ -1,0 +1,69 @@
+<resources>
+    <string name="app_name">Aquitoy Nurse</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_messages">Messages</string>
+    <string name="menu_requests">Requests</string>
+    <string name="menu_profile">Profile</string>
+    <string name="menu_settings">Settings</string>
+
+    <string name="lorem_ipsum_title">Lorem Ipsum"</string>
+    <string name="lorem_ipsum">Lorem Ipsum is simply placeholder text of the printing and
+        typesetting industry. Lorem Ipsum has been the industry\'s standard placeholder text ever
+        since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
+        type specimen book"
+    </string>
+    <string name="fab_content_description">Represents a view to invoke an action</string>
+    <string name="image_view_item_transform_content_description">Represents an image view in the
+        item
+    </string>
+
+    <string name="login_subtitle"><![CDATA[Bienvenido Enfermero a la app Aquitoy]]></string>
+    <string name="login_sign_in">¿Todavía no tienes cuenta? Regístrate</string>
+    <string name="login_button_loggin">Iniciar Sesión</string>
+    <string name="login_hint_password">Contraseña</string>
+    <string name="login_hint_user">Usuario o correo</string>
+    <string name="login_error_mail">El email no es válido</string>
+    <string name="login_error_password">Debe contener al menos 6 caracteres</string>
+    <string name="login_footer_unselected">¿Todavía no tienes cuenta?</string>
+    <string name="login_footer_selected">Regístrate</string>
+    <string name="login_error_dialog_title">No hemos encontrado el usuario</string>
+    <string name="login_error_dialog_body">Verifique los datos o vuelva a intentarlo</string>
+    <string name="login_error_dialog_negative_action">Cancelar</string>
+    <string name="login_error_dialog_positive_action">Reintentar</string>
+    <string name="login_google">Iniciar con Google</string>
+    <string name="login_forgot_password">¿Olvido la contraseña?</string>
+
+    <string name="introduction_button">Empezemos</string>
+
+    <string name="signin_form_real_name">Nombre completo</string>
+    <string name="signin_form_nickname">Nombre público de usuario</string>
+    <string name="signin_form_email">Correo electrónico</string>
+    <string name="signin_form_password">Contraseña</string>
+    <string name="signin_form_repeat_password">Repetir contraseña</string>
+    <string name="signin_error_mail">El email no es válido</string>
+    <string name="signin_error_nickname">Debe contener al menos 6 caracteres</string>
+    <string name="signin_error_realname">Debe contener al menos 6 caracteres</string>
+    <string name="signin_error_password">Las 2 contraseñas debes ser iguales</string>
+    <string name="signin_footer_unselected">¿Ya tienes cuenta?</string>
+    <string name="signin_footer_selected">Inicia sesión</string>
+    <string name="signin_error_dialog_title">Ha ocurrido un error</string>
+    <string name="signin_error_dialog_body">No hemos podido crear tu cuenta, inténtalo de nuevo más tarde</string>
+    <string name="signin_error_dialog_positive_action">Okey :(</string>
+
+    <string name="verification_button_go_to_nuwe">Vamos a Aquitoy</string>
+    <string name="verification_check_mail">Para acceder a la aplicación verifica tu correo electrónico (recuerda mirar en SPAM).</string>
+
+    <string name="dialog_success_title">¡Demo completa!</string>
+    <string name="dialog_success_body">"Espero que te haya gustado este login usando buenas prácticas y buen rollo :) "</string>
+    <string name="dialog_success_positive">¡Gracias!</string>
+
+    <string name="feature_not_allowed">Feature no solicitada :)</string>
+    <string name="signin_button_createaccount">Crear mi cuenta</string>
+</resources>

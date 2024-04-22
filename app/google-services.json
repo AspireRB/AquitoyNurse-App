@@ -1,0 +1,158 @@
+{
+  "project_info": {
+    "project_number": "237440083921",
+    "project_id": "aquitoy-f5e63",
+    "storage_bucket": "aquitoy-f5e63.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:237440083921:android:2294b09e6806456a94e2f0",
+        "android_client_info": {
+          "package_name": "com.aspire.aquitoy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "237440083921-40357b9ut67gp3cmc1g7rebmchjpudlr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aspire.aquitoy",
+            "certificate_hash": "0842ab25df5369ecb1b7b3a181701c8cdf8edc97"
+          }
+        },
+        {
+          "client_id": "237440083921-v4llnkdlksv72qhfqki9t30kq2sm585v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnMQResT334y4mfL0EJX3DBVGvT2t7CnA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "237440083921-v4llnkdlksv72qhfqki9t30kq2sm585v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:237440083921:android:0ddaaaa7137df0b094e2f0",
+        "android_client_info": {
+          "package_name": "com.aspire.aquitoy.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "237440083921-rb3c53ik49q4mlqoof2gu1c801gojacv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aspire.aquitoy.debug",
+            "certificate_hash": "49f7c9b52490b595992778fd77bf05206bd424c5"
+          }
+        },
+        {
+          "client_id": "237440083921-v4llnkdlksv72qhfqki9t30kq2sm585v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnMQResT334y4mfL0EJX3DBVGvT2t7CnA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "237440083921-v4llnkdlksv72qhfqki9t30kq2sm585v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:237440083921:android:15142da09e22692694e2f0",
+        "android_client_info": {
+          "package_name": "com.aspire.aquitoy.nurse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "237440083921-5o8k8i8rnvgbrqchiqpv1797h0dkf4fg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aspire.aquitoy.nurse",
+            "certificate_hash": "0842ab25df5369ecb1b7b3a181701c8cdf8edc97"
+          }
+        },
+        {
+          "client_id": "237440083921-v4llnkdlksv72qhfqki9t30kq2sm585v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnMQResT334y4mfL0EJX3DBVGvT2t7CnA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "237440083921-v4llnkdlksv72qhfqki9t30kq2sm585v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:237440083921:android:e2303740478eaedf94e2f0",
+        "android_client_info": {
+          "package_name": "com.aspire.aquitoy.nurse.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "237440083921-c7t5s568voq34nnmsb6k7ieispr339j0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aspire.aquitoy.nurse.debug",
+            "certificate_hash": "49f7c9b52490b595992778fd77bf05206bd424c5"
+          }
+        },
+        {
+          "client_id": "237440083921-v4llnkdlksv72qhfqki9t30kq2sm585v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnMQResT334y4mfL0EJX3DBVGvT2t7CnA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "237440083921-v4llnkdlksv72qhfqki9t30kq2sm585v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
