@@ -16,7 +16,7 @@
         android:id="@+id/btnService"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Iniciar Servicio"
+        android:text="Finalizar Servicio"
         android:textColor="@color/background"
         android:layout_marginBottom="100dp"
         app:layout_constraintStart_toStartOf="parent"
