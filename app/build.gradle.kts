@@ -48,6 +48,8 @@ android {
 }
 
 dependencies {
+    //Dexter
+    implementation("com.karumi:dexter:6.1.2")
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")

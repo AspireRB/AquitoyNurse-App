@@ -1,5 +1,5 @@
 package com.aspire.aquitoy.nurse
 
 object Common {
-    val NURSE_INFO_REFERENCE: String = "NurseInfo"
+    val NURSE_LOCATION_REFERENCE: String = "NurseLocation"
 }
