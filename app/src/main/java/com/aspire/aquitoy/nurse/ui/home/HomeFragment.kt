@@ -127,7 +127,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     map.uiSettings.isMyLocationButtonEnabled = true
                     map.setOnMyLocationButtonClickListener {
                         fusedLocationProviderClient.lastLocation
-                            .addOnFailureListener { e->
+                            .addOnFailureListener { e ->
                                 Snackbar.make(requireView(),e.message!!,
                                     Snackbar.LENGTH_LONG).show()
                             }
