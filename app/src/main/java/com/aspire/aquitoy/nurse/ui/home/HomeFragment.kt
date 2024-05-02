@@ -46,6 +46,7 @@ import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -54,6 +55,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Suppress("DEPRECATION")
+@AndroidEntryPoint
 class HomeFragment : Fragment(), OnMapReadyCallback {
 
     private var _binding: FragmentHomeBinding? = null
@@ -240,6 +242,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun initListeners() {
+        homeViewModel.createToken()
         _binding!!.btnService.setOnClickListener {
             start = "${coordinates.longitude}, ${coordinates.latitude}"
             Toast.makeText(requireContext(), "coordenadas: $start", Toast.LENGTH_SHORT).show()

@@ -1,4 +1,4 @@
-package com.aspire.aquitoy.nurse.ui.login
+package com.aspire.aquitoy.nurse.common
 
 import android.app.Application
 import android.content.Context
@@ -8,7 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
 @Module
-@InstallIn(SingletonComponent::class) // Cambiar a SingletonComponent o el componente adecuado
+@InstallIn(SingletonComponent::class)
 object AppModule {
     @Provides
     fun provideContext(application: Application): Context {
