@@ -15,7 +15,7 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.aspire.aquitoy.nurse.Common
+import com.aspire.aquitoy.nurse.common.common
 import com.aspire.aquitoy.nurse.R
 import com.aspire.aquitoy.nurse.data.ApiService
 import com.aspire.aquitoy.nurse.databinding.FragmentHomeBinding
@@ -181,9 +181,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     private fun init() {
         onlineRef = FirebaseDatabase.getInstance().getReference().child(".info/connected")
-        nurseLocationRef = FirebaseDatabase.getInstance().getReference(Common
+        nurseLocationRef = FirebaseDatabase.getInstance().getReference(
+            common
             .NURSE_LOCATION_REFERENCE)
-        currentUserRef = FirebaseDatabase.getInstance().getReference(Common.NURSE_LOCATION_REFERENCE)
+        currentUserRef = FirebaseDatabase.getInstance().getReference(common.NURSE_LOCATION_REFERENCE)
             .child(FirebaseAuth.getInstance().currentUser!!.uid)
         geoFire = GeoFire(nurseLocationRef)
         registerOnlineSystem()
@@ -211,7 +212,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                             Snackbar.make(mapFragment.requireView(),error.message,Snackbar
                                 .LENGTH_LONG).show()
                         else
-                            Snackbar.make(mapFragment.requireView(),"Online",Snackbar
+                            Snackbar.make(mapFragment.requireView(),"En Linea",Snackbar
                                 .LENGTH_SHORT).show()
                     }
                 }
