@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -19,6 +18,7 @@ import com.aspire.aquitoy.nurse.common.common
 import com.aspire.aquitoy.nurse.R
 import com.aspire.aquitoy.nurse.data.ApiService
 import com.aspire.aquitoy.nurse.databinding.FragmentHomeBinding
+import com.aspire.aquitoy.nurse.ui.home.model.ServiceInfo
 import com.firebase.geofire.GeoFire
 import com.firebase.geofire.GeoLocation
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -30,9 +30,13 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -81,6 +85,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private lateinit var currentUserRef: DatabaseReference
     private lateinit var nurseLocationRef: DatabaseReference
     private lateinit var geoFire: GeoFire
+
+    private lateinit var serviceInfo: ServiceInfo
 
     private val onlineValueEventListener = object: ValueEventListener{
         override fun onCancelled(error: DatabaseError) {
@@ -173,11 +179,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+        serviceInfo = ServiceInfo()
         createMapFragment()
         init()
-        initListeners()
-
         return root
     }
 
@@ -216,11 +220,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                         else
                             Snackbar.make(mapFragment.requireView(),"En Linea",Snackbar
                                 .LENGTH_SHORT).show()
+                            initListeners(coordinates)
                     }
                 }
             }
         }
-
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
@@ -241,28 +245,46 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         lifecycleScope.cancel()
     }
 
-    private fun initListeners() {
+    private fun initListeners(coordinates: LatLng) {
+        Log.d("AQUIII1", "${coordinates}")
         homeViewModel.createToken()
-        _binding!!.btnService.setOnClickListener {
-            start = "${coordinates.longitude}, ${coordinates.latitude}"
-            Toast.makeText(requireContext(), "coordenadas: $start", Toast.LENGTH_SHORT).show()
-            end = ""
-            poly?.remove()
-            if (poly != null) {
-                poly = null
-            }
-            if (::map.isInitialized) {
-                map.setOnMapClickListener {
-                    if (end.isEmpty()){
-                        end = "${it.longitude}, ${it.latitude}"
-                    } else {
-                        createRoute()
-                    }
+        homeViewModel.getService()
+        homeViewModel.serviceInfoLiveData.observe(viewLifecycleOwner) { serviceInfo ->
+            val patientLocationServiceString = serviceInfo.patientLocationService
+            val coordinatesPatient = patientLocationServiceString?.split(",") ?: listOf("0.0", "0.0")
+            val latitude = coordinatesPatient[0].toDoubleOrNull() ?: 0.0
+            val longitude = coordinatesPatient[1].toDoubleOrNull() ?: 0.0
+            val patientLocationLatLng = LatLng(latitude, longitude)
+            showBottomSheet()
+            _binding!!.btnService.setOnClickListener {
+                start = "${this.coordinates.longitude}, ${this.coordinates.latitude}"
+                end = "${patientLocationLatLng.longitude}, ${patientLocationLatLng.latitude}"
+                poly?.remove()
+                if (poly != null) {
+                    poly = null
+                }
+                if (::map.isInitialized) {
+                    map.addMarker(MarkerOptions()
+                        .position(LatLng(patientLocationLatLng.latitude, patientLocationLatLng
+                            .longitude))
+                        .flat(true)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.icons_location_person)))
+                    createRoute()
                 }
             }
         }
     }
 
+    fun showBottomSheet() {
+        val bottomSheetView = layoutInflater.inflate(R.layout.bottom_service_request,null)
+
+        val bottomSheetDialog = BottomSheetDialog(requireContext())
+        bottomSheetDialog.setContentView(bottomSheetView)
+
+        // Muestra el BottomSheetDialog
+        bottomSheetDialog.show()
+
+    }
     private fun createMapFragment() {
         mapFragment = childFragmentManager.findFragmentById(R.id.Map) as SupportMapFragment
         mapFragment.getMapAsync(this)
