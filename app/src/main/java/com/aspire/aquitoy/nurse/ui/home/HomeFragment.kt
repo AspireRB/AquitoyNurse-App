@@ -19,6 +19,7 @@ import com.aspire.aquitoy.nurse.R
 import com.aspire.aquitoy.nurse.data.ApiService
 import com.aspire.aquitoy.nurse.databinding.FragmentHomeBinding
 import com.aspire.aquitoy.nurse.ui.home.model.ButtomSheetService
+import com.aspire.aquitoy.nurse.ui.home.model.ClinicHistory
 import com.aspire.aquitoy.nurse.ui.home.model.ServiceInfo
 import com.firebase.geofire.GeoFire
 import com.firebase.geofire.GeoLocation
@@ -88,6 +89,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private lateinit var serviceInfo: ServiceInfo
 
     private var isBottomSheetVisible = false
+    private var isHistoryVisible = false
 
     private val onlineValueEventListener = object: ValueEventListener{
         override fun onCancelled(error: DatabaseError) {
@@ -282,6 +284,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     _binding!!.btnService.visibility = View.VISIBLE
                     _binding!!.btnService.setOnClickListener {
                         homeViewModel.updateState(serviceInfo.serviceID!!)
+                        showHistory(serviceInfo.serviceID)
                         serviceInfo.state = "finalized"
                         poly?.remove()
                         map.clear()
@@ -302,6 +305,19 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 isBottomSheetVisible = true
             } else {
                 Log.e("BottomSheetFragment", "Fragment already added: $existingFragment")
+            }
+        }
+    }
+
+    fun showHistory(serviceID: String?) {
+        if (!isHistoryVisible) {
+            val existingFragment = childFragmentManager.findFragmentByTag(ClinicHistory.TAG)
+            if (existingFragment == null) {
+                val history = ClinicHistory(serviceID!!)
+                history.show(childFragmentManager, ClinicHistory.TAG)
+                isHistoryVisible = true
+            } else {
+                Log.e("historyFragment", "Fragment already added: $existingFragment")
             }
         }
     }

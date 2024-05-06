@@ -57,4 +57,37 @@ context: Context){
             Log.d("REALTIMEDATABASE", "ERROR: ${exception.message}")
         }
     }
+
+    fun insertClinicHistory(
+        serviceID: String,
+        patientName: String,
+        patientAge: String,
+        patientCedula: String,
+        nurseName: String,
+        nurseCedula: String,
+        medicalHistory: String,
+        currentMedications: String
+    ): Boolean {
+        try {
+            val serviceInfoRef = firebaseClient.db_rt.child(common.SERVICE_INFO_REFERENCE).child(serviceID)
+
+            // Crear un HashMap para almacenar los datos de la historia clínica
+            val clinicHistoryMap = HashMap<String, Any>()
+            clinicHistoryMap["patientName"] = patientName
+            clinicHistoryMap["patientAge"] = patientAge
+            clinicHistoryMap["patientCedula"] = patientCedula
+            clinicHistoryMap["nurseName"] = nurseName
+            clinicHistoryMap["nurseCedula"] = nurseCedula
+            clinicHistoryMap["medicalHistory"] = medicalHistory
+            clinicHistoryMap["currentMedications"] = currentMedications
+
+            // Insertar los datos en la base de datos
+            serviceInfoRef.updateChildren(clinicHistoryMap)
+
+            return true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        }
+    }
 }

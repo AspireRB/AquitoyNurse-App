@@ -20,8 +20,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val databaseService: DatabaseService, private val
-authenticationService: AuthenticationService, private val context: Context): ViewModel() {
+class HomeViewModel @Inject constructor(private val databaseService: DatabaseService, private val context: Context): ViewModel() {
 
     private val _serviceInfoLiveData = MutableLiveData<ServiceInfo>()
     val serviceInfoLiveData: LiveData<ServiceInfo> = _serviceInfoLiveData

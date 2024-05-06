@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="30dp"
+        android:elevation="8dp"
+        android:background="@color/background">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Datos personales -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TitleText"
+                    android:layout_marginBottom="8dp"
+                    android:text="Datos paciente"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/editTextName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/FormEditText"
+                    android:hint="Nombre completo" />
+
+                <EditText
+                    android:id="@+id/editTextAge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/FormEditText"
+                    android:hint="Edad"
+                    android:inputType="number" />
+
+                <EditText
+                    android:id="@+id/editTextCedula"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/FormEditText"
+                    android:hint="Cedula"
+                    android:inputType="number" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TitleText"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Datos enfermero"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/editTextNameNurse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/FormEditText"
+                    android:hint="Nombre completo" />
+
+                <EditText
+                    android:id="@+id/editTextCedulaNurse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/FormEditText"
+                    android:hint="Cedula"
+                    android:inputType="number" />
+
+                <!-- Antecedentes médicos -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TitleText"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Antecedentes médicos"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/editTextMedicalHistory"
+                    style="@style/FormEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Antecedentes médicos"
+                    android:inputType="textMultiLine"
+                    android:lines="5" />
+
+                <!-- Medicamentos actuales -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TitleText"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Medicamenos actuales"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/editTextCurrentMedications"
+                    style="@style/FormEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Medicamentos actuales"
+                    android:inputType="textMultiLine"
+                    android:lines="5" />
+
+                <!-- Botón enviar -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonSubmit"
+                    style="@style/PrimaryButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Enviar"
+                    app:cornerRadius="30dp" />
+            </LinearLayout>
+        </ScrollView>
+
+    </androidx.cardview.widget.CardView>
+</FrameLayout>
