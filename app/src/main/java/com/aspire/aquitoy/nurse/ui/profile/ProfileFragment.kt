@@ -22,6 +22,10 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var textNameUser: TextView
+    private lateinit var textEmailUser: TextView
+    private lateinit var textRolUser: TextView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,10 +36,6 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textProfile
-        profileViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         initUI()
         return root
     }
@@ -45,6 +45,22 @@ class ProfileFragment : Fragment() {
     }
 
     private fun initListeners() {
+        profileViewModel.getInfoUser()
+
+        profileViewModel.userInfo.observe(viewLifecycleOwner) { userInfo ->
+            val nameUser = userInfo!!.realName
+            val emailUser = userInfo!!.email
+            val rolUser = userInfo!!.rol
+
+            textNameUser = binding.idName
+            textEmailUser = binding.idEmail
+            textRolUser = binding.idRol
+
+            textNameUser.text = nameUser
+            textEmailUser.text = emailUser
+            textRolUser.text = rolUser
+        }
+
         binding.btnLogout.setOnClickListener {
             profileViewModel.logout { navigateToIntroduction() }
         }

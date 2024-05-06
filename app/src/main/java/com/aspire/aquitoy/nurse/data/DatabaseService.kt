@@ -3,13 +3,10 @@ package com.aspire.aquitoy.nurse.data
 import android.content.Context
 import android.util.Log
 import com.aspire.aquitoy.nurse.common.common
+import com.aspire.aquitoy.nurse.ui.profile.model.UserInfo
 import com.google.android.gms.tasks.Task
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.Query
-import com.google.firebase.database.ValueEventListener
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -63,6 +60,7 @@ context: Context){
         patientName: String,
         patientAge: String,
         patientCedula: String,
+        fecha: String,
         nurseName: String,
         nurseCedula: String,
         medicalHistory: String,
@@ -76,6 +74,7 @@ context: Context){
             clinicHistoryMap["patientName"] = patientName
             clinicHistoryMap["patientAge"] = patientAge
             clinicHistoryMap["patientCedula"] = patientCedula
+            clinicHistoryMap["fecha"] = fecha
             clinicHistoryMap["nurseName"] = nurseName
             clinicHistoryMap["nurseCedula"] = nurseCedula
             clinicHistoryMap["medicalHistory"] = medicalHistory
@@ -88,6 +87,35 @@ context: Context){
         } catch (e: Exception) {
             e.printStackTrace()
             return false
+        }
+    }
+
+    fun getInfoUser(callback: (UserInfo?, Throwable?) -> Unit) {
+        val currentUser = firebaseClient.auth.currentUser!!.uid
+        val currentUserInfoRef = firebaseClient.db_rt.child(common.NURSE_INFO_REFERENCE)
+        currentUserInfoRef.child(currentUser).get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val dataSnapshot = task.result
+                if (dataSnapshot != null && dataSnapshot.exists()) {
+                    // Obtener los valores de la base de datos
+                    val reaName = dataSnapshot.child("realName").getValue(String::class.java)
+                    val email = dataSnapshot.child("email").getValue(String::class.java)
+                    val rol = dataSnapshot.child("rol").getValue(String::class.java)
+                    // Otros campos...
+
+                    // Crear un objeto de modelo de datos con la información obtenida
+                    val userInfo = UserInfo(reaName!!, email!!, rol!!)
+
+                    // Devolver la información al llamador
+                    callback(userInfo, null)
+                } else {
+                    // Manejar el caso donde los datos no existen
+                    callback(null, Throwable("Data not found"))
+                }
+            } else {
+                // Manejar el error
+                callback(null, task.exception)
+            }
         }
     }
 }

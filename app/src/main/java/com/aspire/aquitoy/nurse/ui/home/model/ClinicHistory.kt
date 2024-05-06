@@ -1,6 +1,7 @@
 package com.aspire.aquitoy.nurse.ui.home.model
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,12 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import com.aspire.aquitoy.nurse.R
 import com.aspire.aquitoy.nurse.data.DatabaseService
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Calendar
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -24,6 +25,7 @@ class ClinicHistory (private val serviceID: String) : BottomSheetDialogFragment(
     private lateinit var namePatient: EditText
     private lateinit var age: EditText
     private lateinit var cedulaPatient: EditText
+    private lateinit var fecha: EditText
     //Datos enfermero
     private lateinit var nameNurse: EditText
     private lateinit var cedulaNurse: EditText
@@ -42,12 +44,16 @@ class ClinicHistory (private val serviceID: String) : BottomSheetDialogFragment(
         namePatient = view.findViewById(R.id.editTextName)
         age = view.findViewById(R.id.editTextAge)
         cedulaPatient = view.findViewById(R.id.editTextCedula)
+        fecha = view.findViewById(R.id.editTextFecha)
         nameNurse = view.findViewById(R.id.editTextNameNurse)
         cedulaNurse = view.findViewById(R.id.editTextCedulaNurse)
         antecedentes = view.findViewById(R.id.editTextMedicalHistory)
         medicamentos = view.findViewById(R.id.editTextCurrentMedications)
         btnSend = view.findViewById(R.id.buttonSubmit)
 
+        fecha.setOnClickListener {
+            showDatePickerDialog()
+        }
         btnSend.setOnClickListener { sendHistory(serviceID) }
 
         return view
@@ -57,15 +63,15 @@ class ClinicHistory (private val serviceID: String) : BottomSheetDialogFragment(
         val patientName = namePatient.text.toString().trim()
         val patientAge = age.text.toString().trim()
         val patientCedula = cedulaPatient.text.toString().trim()
+        val fecha = fecha.text.toString()
         val nurseName = nameNurse.text.toString().trim()
         val nurseCedula = cedulaNurse.text.toString().trim()
         val medicalHistory = antecedentes.text.toString().trim()
         val currentMedications = medicamentos.text.toString().trim()
 
         // Validar que todos los campos estén llenos
-        if (patientName.isEmpty() || patientAge.isEmpty() || patientCedula.isEmpty() ||
-            nurseName.isEmpty() || nurseCedula.isEmpty() ||
-            medicalHistory.isEmpty() || currentMedications.isEmpty()) {
+        if (patientName.isEmpty() || patientAge.isEmpty() || patientCedula.isEmpty() || fecha
+            .isEmpty() || nurseName.isEmpty() || nurseCedula.isEmpty() || medicalHistory.isEmpty() || currentMedications.isEmpty()) {
             Toast.makeText(requireContext(), "Por favor llena todos los campos", Toast.LENGTH_SHORT).show()
             return
         }
@@ -76,6 +82,7 @@ class ClinicHistory (private val serviceID: String) : BottomSheetDialogFragment(
             patientName,
             patientAge,
             patientCedula,
+            fecha,
             nurseName,
             nurseCedula,
             medicalHistory,
@@ -94,6 +101,21 @@ class ClinicHistory (private val serviceID: String) : BottomSheetDialogFragment(
         Handler(Looper.getMainLooper()).post {
             dismiss()
         }
+    }
+
+    private fun showDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(requireContext(), { _, year, month, day ->
+            // Aquí puedes hacer algo con la fecha seleccionada, como mostrarla en el EditText
+            val selectedDate = "$day/${month + 1}/$year"
+            fecha.setText(selectedDate)
+        }, year, month, day)
+
+        datePickerDialog.show()
     }
 
     companion object {
