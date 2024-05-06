@@ -6,5 +6,5 @@ data class ServiceInfo(
     val nurseLocationService: String?=null,
     val patientID: String?=null,
     val patientLocationService: String?=null,
-    val state: String?=null
+    var state: String?=null
 )

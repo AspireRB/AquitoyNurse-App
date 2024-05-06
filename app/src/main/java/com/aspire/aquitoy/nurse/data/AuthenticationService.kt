@@ -58,5 +58,9 @@ class AuthenticationService @Inject constructor(private val firebase: FirebaseCl
         firebase.auth.signOut()
     }
 
+    fun currentUserId(): String {
+        return firebase.auth.currentUser!!.uid
+    }
+
     private fun getCurrentuser() = firebase.auth.currentUser
 }

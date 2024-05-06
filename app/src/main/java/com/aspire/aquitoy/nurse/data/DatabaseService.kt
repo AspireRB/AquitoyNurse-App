@@ -14,8 +14,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DatabaseService @Inject constructor(private val firebaseClient: FirebaseClient,
-                                          @ApplicationContext private val context: Context){
+class DatabaseService @Inject constructor(private val firebaseClient: FirebaseClient, private val
+context: Context){
 
     fun insertToken(): Task<String> {
         return firebaseClient.messaging.token.addOnCompleteListener {
@@ -29,11 +29,32 @@ class DatabaseService @Inject constructor(private val firebaseClient: FirebaseCl
         }
     }
 
+    fun getNurseInfoRef (): DatabaseReference {
+        return firebaseClient.db_rt.child(common.NURSE_INFO_REFERENCE)
+    }
+
     fun getService(): Query {
         val nurseID = firebaseClient.auth.currentUser!!.uid
-        val serviceInfoRef  = firebaseClient.db_rt.child(common.SERVICE_INFO_REFERENCES)
+        val serviceInfoRef  = firebaseClient.db_rt.child(common.SERVICE_INFO_REFERENCE)
         val query = serviceInfoRef.orderByChild("nurseID").equalTo(nurseID)
 
         return query
+    }
+
+    fun updateStateService(serviceID : String, state : String): Task<Void> {
+        val serviceInfoRef = firebaseClient.db_rt.child(common.SERVICE_INFO_REFERENCE)
+        return serviceInfoRef.child(serviceID).child("state").setValue(state).addOnFailureListener {
+            exception ->
+            Log.d("REALTIMEDATABASE", "ERROR: ${exception.message}")
+        }
+    }
+
+    fun updateState(asset : Boolean): Task<Void> {
+        val nurseID = firebaseClient.auth.currentUser!!.uid
+        val nurseInfoRef = getNurseInfoRef()
+        return nurseInfoRef.child(nurseID).child("state").setValue(asset).addOnFailureListener {
+                exception ->
+            Log.d("REALTIMEDATABASE", "ERROR: ${exception.message}")
+        }
     }
 }

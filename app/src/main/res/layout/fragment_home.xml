@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".nurse.ui.home.HomeFragment">
+    tools:context=".ui.home.HomeFragment">
 
     <fragment
         android:id="@+id/Map"
@@ -17,6 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Finalizar Servicio"
+        android:visibility="invisible"
         android:textColor="@color/background"
         android:layout_marginBottom="100dp"
         app:layout_constraintStart_toStartOf="parent"

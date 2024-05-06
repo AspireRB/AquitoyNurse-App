@@ -18,6 +18,7 @@ import com.aspire.aquitoy.nurse.common.common
 import com.aspire.aquitoy.nurse.R
 import com.aspire.aquitoy.nurse.data.ApiService
 import com.aspire.aquitoy.nurse.databinding.FragmentHomeBinding
+import com.aspire.aquitoy.nurse.ui.home.model.ButtomSheetService
 import com.aspire.aquitoy.nurse.ui.home.model.ServiceInfo
 import com.firebase.geofire.GeoFire
 import com.firebase.geofire.GeoLocation
@@ -30,13 +31,11 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -88,6 +87,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var serviceInfo: ServiceInfo
 
+//    private val buttomSheet = ButtomSheetService
+    private var isBottomSheetVisible = false
+
     private val onlineValueEventListener = object: ValueEventListener{
         override fun onCancelled(error: DatabaseError) {
             Snackbar.make(mapFragment.requireView(), error.message, Snackbar.LENGTH_SHORT).show()
@@ -109,6 +111,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
         registerOnlineSystem()
+        val existingFragment = childFragmentManager.findFragmentByTag(ButtomSheetService.TAG)
+        if (existingFragment != null) {
+            isBottomSheetVisible = true
+        } else {
+            isBottomSheetVisible = false
+        }
     }
 
     private fun registerOnlineSystem() {
@@ -246,7 +254,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun initListeners(coordinates: LatLng) {
-        Log.d("AQUIII1", "${coordinates}")
         homeViewModel.createToken()
         homeViewModel.getService()
         homeViewModel.serviceInfoLiveData.observe(viewLifecycleOwner) { serviceInfo ->
@@ -255,9 +262,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             val latitude = coordinatesPatient[0].toDoubleOrNull() ?: 0.0
             val longitude = coordinatesPatient[1].toDoubleOrNull() ?: 0.0
             val patientLocationLatLng = LatLng(latitude, longitude)
-            showBottomSheet()
-            _binding!!.btnService.setOnClickListener {
-                start = "${this.coordinates.longitude}, ${this.coordinates.latitude}"
+            Log.d("SERVICE","${serviceInfo.state}")
+            if (serviceInfo.state == "create") {
+                showBottomSheet(serviceInfo.serviceID)
+            } else if (serviceInfo.state == "accept") {
+                start = "${coordinates.longitude}, ${coordinates.latitude}"
                 end = "${patientLocationLatLng.longitude}, ${patientLocationLatLng.latitude}"
                 poly?.remove()
                 if (poly != null) {
@@ -270,21 +279,32 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                         .flat(true)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.icons_location_person)))
                     createRoute()
+                    _binding!!.btnService.visibility = View.VISIBLE
+                    _binding!!.btnService.setOnClickListener {
+                        homeViewModel.updateState(serviceInfo.serviceID!!)
+                        serviceInfo.state = "finalized"
+                        poly?.remove()
+                        map.clear()
+                        _binding!!.btnService.visibility = View.INVISIBLE
+                    }
                 }
             }
         }
     }
 
-    fun showBottomSheet() {
-        val bottomSheetView = layoutInflater.inflate(R.layout.bottom_service_request,null)
-
-        val bottomSheetDialog = BottomSheetDialog(requireContext())
-        bottomSheetDialog.setContentView(bottomSheetView)
-
-        // Muestra el BottomSheetDialog
-        bottomSheetDialog.show()
-
+    fun showBottomSheet(serviceID: String?) {
+        if (!isBottomSheetVisible) {
+            val existingFragment = childFragmentManager.findFragmentByTag(ButtomSheetService.TAG)
+            if (existingFragment == null) {
+                val bottomSheet = ButtomSheetService(serviceID!!)
+                bottomSheet.show(childFragmentManager, ButtomSheetService.TAG)
+                isBottomSheetVisible = true
+            } else {
+                Log.e("BottomSheetFragment", "Fragment already added: $existingFragment")
+            }
+        }
     }
+
     private fun createMapFragment() {
         mapFragment = childFragmentManager.findFragmentById(R.id.Map) as SupportMapFragment
         mapFragment.getMapAsync(this)
