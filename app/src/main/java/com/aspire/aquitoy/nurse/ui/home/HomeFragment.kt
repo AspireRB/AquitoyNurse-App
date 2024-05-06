@@ -87,7 +87,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var serviceInfo: ServiceInfo
 
-//    private val buttomSheet = ButtomSheetService
     private var isBottomSheetVisible = false
 
     private val onlineValueEventListener = object: ValueEventListener{
@@ -222,13 +221,14 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                         FirebaseAuth.getInstance().currentUser!!.uid,
                         GeoLocation(coordinates.longitude, coordinates.latitude)
                     ){ key:String?, error: DatabaseError? ->
-                        if (error != null)
-                            Snackbar.make(mapFragment.requireView(),error.message,Snackbar
+                        if (error != null) {
+                            Snackbar.make(requireView(),error.message,Snackbar
                                 .LENGTH_LONG).show()
-                        else
-                            Snackbar.make(mapFragment.requireView(),"En Linea",Snackbar
+                        }  else {
+                            Snackbar.make(requireView(),"En Linea",Snackbar
                                 .LENGTH_SHORT).show()
                             initListeners(coordinates)
+                        }
                     }
                 }
             }
@@ -286,6 +286,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                         poly?.remove()
                         map.clear()
                         _binding!!.btnService.visibility = View.INVISIBLE
+                        init()
                     }
                 }
             }

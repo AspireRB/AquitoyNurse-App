@@ -118,9 +118,4 @@ authenticationService: AuthenticationService, private val context: Context): Vie
             }
         }
     }
-
-    fun checkStateService(serviceID: String?) {
-        val serviceInfoRef = databaseService.getService()
-    }
-
 }
