@@ -313,7 +313,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         if (!isHistoryVisible) {
             val existingFragment = childFragmentManager.findFragmentByTag(ClinicHistory.TAG)
             if (existingFragment == null) {
-                val history = ClinicHistory(serviceID!!)
+                val history = ClinicHistory(serviceID ?: "")
                 history.show(childFragmentManager, ClinicHistory.TAG)
                 isHistoryVisible = true
             } else {

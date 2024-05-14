@@ -15,12 +15,14 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:background="@color/background">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@color/background">
 
                 <!-- Datos personales -->
                 <TextView
@@ -45,7 +47,8 @@
                     android:layout_height="wrap_content"
                     style="@style/FormEditText"
                     android:hint="Edad"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:maxLength="100"/>
 
                 <EditText
                     android:id="@+id/editTextCedula"
@@ -60,7 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/FormEditText"
-                    android:hint="Fecha"
+                    android:hint="Fecha Nacimiento"
                     android:focusable="false"
                     android:clickable="true"
                     android:inputType="none" />
@@ -87,26 +90,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/FormEditText"
-                    android:hint="Cedula"
+                    android:hint="Tarjeta profesional"
                     android:inputType="number" />
 
-                <!-- Antecedentes médicos -->
+                <!-- Diagnostico -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/TitleText"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="8dp"
-                    android:text="Antecedentes médicos"
+                    android:text="Diagnostico"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/editTextMedicalHistory"
+                    android:id="@+id/editTextMedicalDiagnosis"
                     style="@style/FormEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Antecedentes médicos"
+                    android:hint="Diagnostico"
                     android:inputType="textMultiLine"
                     android:lines="5" />
 
@@ -127,6 +130,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Medicamentos actuales"
+                    android:inputType="textMultiLine"
+                    android:lines="5" />
+
+                <!-- Antecedentes médicos -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TitleText"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Antecedentes y discapacidad"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/editTextMedicalHistory"
+                    style="@style/FormEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Antecedentes y discapacidad"
                     android:inputType="textMultiLine"
                     android:lines="5" />
 

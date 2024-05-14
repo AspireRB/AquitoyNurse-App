@@ -5,6 +5,8 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,13 +27,14 @@ class ClinicHistory (private val serviceID: String) : BottomSheetDialogFragment(
     private lateinit var namePatient: EditText
     private lateinit var age: EditText
     private lateinit var cedulaPatient: EditText
-    private lateinit var fecha: EditText
+    private lateinit var fechaNacimiento: EditText
     //Datos enfermero
     private lateinit var nameNurse: EditText
-    private lateinit var cedulaNurse: EditText
+    private lateinit var tarjetaNurse: EditText
     //General
-    private lateinit var antecedentes: EditText
+    private lateinit var diagnostico: EditText
     private lateinit var medicamentos: EditText
+    private lateinit var antecedentes: EditText
     private lateinit var btnSend: Button
 
     @SuppressLint("MissingInflatedId")
@@ -44,17 +47,45 @@ class ClinicHistory (private val serviceID: String) : BottomSheetDialogFragment(
         namePatient = view.findViewById(R.id.editTextName)
         age = view.findViewById(R.id.editTextAge)
         cedulaPatient = view.findViewById(R.id.editTextCedula)
-        fecha = view.findViewById(R.id.editTextFecha)
+        fechaNacimiento = view.findViewById(R.id.editTextFecha)
         nameNurse = view.findViewById(R.id.editTextNameNurse)
-        cedulaNurse = view.findViewById(R.id.editTextCedulaNurse)
+        tarjetaNurse = view.findViewById(R.id.editTextCedulaNurse)
+        diagnostico = view.findViewById(R.id.editTextMedicalDiagnosis)
         antecedentes = view.findViewById(R.id.editTextMedicalHistory)
         medicamentos = view.findViewById(R.id.editTextCurrentMedications)
         btnSend = view.findViewById(R.id.buttonSubmit)
 
-        fecha.setOnClickListener {
-            showDatePickerDialog()
+        var ageSuccess = false
+
+        age.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                val input = s.toString()
+                val isValid = input.isNotEmpty() && input.toInt() in 18..100 // Validar si la edad ingresada está entre 18 y 100 años
+                if (!isValid) {
+                    age.error = "Edad invalida"
+                    ageSuccess = false
+                } else {
+                    age.error = null // Borrar el mensaje de error si la entrada es válida
+                    ageSuccess = true
+                }
+            }
+        })
+
+        fechaNacimiento.setOnClickListener {
+            showDatePickerDialog(age)
         }
-        btnSend.setOnClickListener { sendHistory(serviceID) }
+
+        btnSend.setOnClickListener {
+            if (ageSuccess) {
+                sendHistory(serviceID)
+            } else {
+                Toast.makeText(requireContext(), "Por favor, completa todos los campos correctamente", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         return view
     }
@@ -63,15 +94,15 @@ class ClinicHistory (private val serviceID: String) : BottomSheetDialogFragment(
         val patientName = namePatient.text.toString().trim()
         val patientAge = age.text.toString().trim()
         val patientCedula = cedulaPatient.text.toString().trim()
-        val fecha = fecha.text.toString()
+        val patientFechaNacimiento = fechaNacimiento.text.toString()
         val nurseName = nameNurse.text.toString().trim()
-        val nurseCedula = cedulaNurse.text.toString().trim()
-        val medicalHistory = antecedentes.text.toString().trim()
+        val nurseTarjeta = tarjetaNurse.text.toString().trim()
+        val medicalDiagnosis = diagnostico.text.toString().trim()
         val currentMedications = medicamentos.text.toString().trim()
+        val medicalHistory = antecedentes.text.toString().trim()
 
         // Validar que todos los campos estén llenos
-        if (patientName.isEmpty() || patientAge.isEmpty() || patientCedula.isEmpty() || fecha
-            .isEmpty() || nurseName.isEmpty() || nurseCedula.isEmpty() || medicalHistory.isEmpty() || currentMedications.isEmpty()) {
+        if (patientName.isEmpty() || patientAge.isEmpty() || patientCedula.isEmpty() || patientFechaNacimiento.isEmpty() || nurseName.isEmpty() || nurseTarjeta.isEmpty() || medicalDiagnosis.isEmpty() || currentMedications.isEmpty() || medicalHistory.isEmpty()) {
             Toast.makeText(requireContext(), "Por favor llena todos los campos", Toast.LENGTH_SHORT).show()
             return
         }
@@ -82,11 +113,12 @@ class ClinicHistory (private val serviceID: String) : BottomSheetDialogFragment(
             patientName,
             patientAge,
             patientCedula,
-            fecha,
+            patientFechaNacimiento,
             nurseName,
-            nurseCedula,
-            medicalHistory,
-            currentMedications
+            nurseTarjeta,
+            medicalDiagnosis,
+            currentMedications,
+            medicalHistory
         )
 
         if (success) {
@@ -103,19 +135,26 @@ class ClinicHistory (private val serviceID: String) : BottomSheetDialogFragment(
         }
     }
 
-    private fun showDatePickerDialog() {
+    private fun showDatePickerDialog(age: EditText) {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        val datePickerDialog = DatePickerDialog(requireContext(), { _, year, month, day ->
-            // Aquí puedes hacer algo con la fecha seleccionada, como mostrarla en el EditText
-            val selectedDate = "$day/${month + 1}/$year"
-            fecha.setText(selectedDate)
-        }, year, month, day)
-
-        datePickerDialog.show()
+        // Calcula la fecha de nacimiento basada en la edad actual ingresada por el usuario
+        val edad = age.text.toString().toIntOrNull()
+        if (edad != null && edad in 18..100) {
+            val birthYear = year - edad
+            val datePickerDialog = DatePickerDialog(requireContext(), { _, year, month, day ->
+                // Aquí puedes hacer algo con la fecha seleccionada, como mostrarla en el EditText
+                val selectedDate = "$day/${month + 1}/$year"
+                fechaNacimiento.setText(selectedDate)
+            }, birthYear, month, day)
+            datePickerDialog.datePicker.maxDate = calendar.timeInMillis // Establece la fecha máxima como la fecha actual
+            datePickerDialog.show()
+        } else {
+            Toast.makeText(requireContext(), "Por favor ingresa una edad válida", Toast.LENGTH_SHORT).show()
+        }
     }
 
     companion object {

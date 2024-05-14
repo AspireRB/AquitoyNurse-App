@@ -50,7 +50,7 @@ class ProfileFragment : Fragment() {
         profileViewModel.userInfo.observe(viewLifecycleOwner) { userInfo ->
             val nameUser = userInfo!!.realName
             val emailUser = userInfo!!.email
-            val rolUser = userInfo!!.rol
+            val rolUser = "Enfermero"
 
             textNameUser = binding.idName
             textEmailUser = binding.idEmail

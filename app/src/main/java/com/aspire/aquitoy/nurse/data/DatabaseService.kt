@@ -7,6 +7,8 @@ import com.aspire.aquitoy.nurse.ui.profile.model.UserInfo
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.Query
+import java.text.SimpleDateFormat
+import java.util.Calendar
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -60,25 +62,33 @@ context: Context){
         patientName: String,
         patientAge: String,
         patientCedula: String,
-        fecha: String,
+        patientFechaNacimiento: String,
         nurseName: String,
-        nurseCedula: String,
-        medicalHistory: String,
-        currentMedications: String
+        nurseTarjeta: String,
+        medicalDiagnosis: String,
+        currentMedications: String,
+        medicalHistory: String
     ): Boolean {
         try {
             val serviceInfoRef = firebaseClient.db_rt.child(common.SERVICE_INFO_REFERENCE).child(serviceID)
 
+            val calendarioActual = Calendar.getInstance()
+            val formatoFecha = SimpleDateFormat("dd/MM/yyyy")
+            val fechaFormateada = formatoFecha.format(calendarioActual.time)
+            val fechaActual: String = fechaFormateada
+
             // Crear un HashMap para almacenar los datos de la historia clínica
             val clinicHistoryMap = HashMap<String, Any>()
+            clinicHistoryMap["fecha"] = fechaActual
             clinicHistoryMap["patientName"] = patientName
             clinicHistoryMap["patientAge"] = patientAge
             clinicHistoryMap["patientCedula"] = patientCedula
-            clinicHistoryMap["fecha"] = fecha
+            clinicHistoryMap["patientFechaNacimiento"] = patientFechaNacimiento
             clinicHistoryMap["nurseName"] = nurseName
-            clinicHistoryMap["nurseCedula"] = nurseCedula
-            clinicHistoryMap["medicalHistory"] = medicalHistory
+            clinicHistoryMap["nurseTarjeta"] = nurseTarjeta
+            clinicHistoryMap["medicalDiagnosis"] = medicalDiagnosis
             clinicHistoryMap["currentMedications"] = currentMedications
+            clinicHistoryMap["medicalHistory"] = medicalHistory
 
             // Insertar los datos en la base de datos
             serviceInfoRef.updateChildren(clinicHistoryMap)

@@ -28,7 +28,7 @@
     <string name="login_sign_in">¿Todavía no tienes cuenta? Regístrate</string>
     <string name="login_button_loggin">Iniciar Sesión</string>
     <string name="login_hint_password">Contraseña</string>
-    <string name="login_hint_user">Usuario o correo</string>
+    <string name="login_hint_user">Correo</string>
     <string name="login_error_mail">El email no es válido</string>
     <string name="login_error_password">Debe contener al menos 6 caracteres</string>
     <string name="login_footer_unselected">¿Todavía no tienes cuenta?</string>
@@ -40,7 +40,7 @@
     <string name="login_google">Iniciar con Google</string>
     <string name="login_forgot_password">¿Olvido la contraseña?</string>
 
-    <string name="introduction_button">Empezemos</string>
+    <string name="introduction_button">Empecemos</string>
 
     <string name="signin_form_real_name">Nombre completo</string>
     <string name="signin_form_nickname">Nombre público de usuario</string>
