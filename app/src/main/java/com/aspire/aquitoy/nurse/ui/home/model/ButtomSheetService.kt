@@ -48,6 +48,13 @@ class ButtomSheetService(private val serviceID: String) : BottomSheetDialogFragm
                 databaseService.updateState(false).addOnCompleteListener {
                     if (it.isSuccessful) {
                         dismissBottomSheet()
+                        databaseService.initialSendHistoryService(serviceID).addOnCompleteListener {
+                            if (it.isSuccessful){
+                                Log.d("HistoryInitial", "OK")
+                            } else {
+                                Log.d("HistoryInitial", "NO OK")
+                            }
+                        }
                         Toast.makeText(context, "Servicio aceptado", Toast.LENGTH_SHORT).show()
                     }
                 }

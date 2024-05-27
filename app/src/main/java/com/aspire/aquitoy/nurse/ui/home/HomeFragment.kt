@@ -115,8 +115,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         val existingFragment = childFragmentManager.findFragmentByTag(ButtomSheetService.TAG)
         if (existingFragment != null) {
             isBottomSheetVisible = true
+            isHistoryVisible = true
         } else {
             isBottomSheetVisible = false
+            isHistoryVisible = false
         }
     }
 
@@ -256,7 +258,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun initListeners(coordinates: LatLng) {
-        homeViewModel.createToken()
         homeViewModel.getService()
         homeViewModel.serviceInfoLiveData.observe(viewLifecycleOwner) { serviceInfo ->
             val patientLocationServiceString = serviceInfo.patientLocationService
@@ -292,6 +293,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                         init()
                     }
                 }
+            }else if (serviceInfo.state == "finalized") {
+                if(serviceInfo.sendHistory != "OK") {
+                    showHistory(serviceInfo.serviceID)
+                }
             }
         }
     }
@@ -314,6 +319,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             val existingFragment = childFragmentManager.findFragmentByTag(ClinicHistory.TAG)
             if (existingFragment == null) {
                 val history = ClinicHistory(serviceID ?: "")
+                history.isCancelable = false
                 history.show(childFragmentManager, ClinicHistory.TAG)
                 isHistoryVisible = true
             } else {

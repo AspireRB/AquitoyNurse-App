@@ -6,12 +6,8 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.aspire.aquitoy.nurse.common.common
-import com.aspire.aquitoy.nurse.data.AuthenticationService
 import com.aspire.aquitoy.nurse.data.DatabaseService
-import com.aspire.aquitoy.nurse.data.FirebaseClient
 import com.aspire.aquitoy.nurse.ui.home.model.ServiceInfo
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -48,40 +44,20 @@ class HomeViewModel @Inject constructor(private val databaseService: DatabaseSer
                         // Access service data based on actual data structure
                         val service = snapshot.getValue<Map<String, String>>() // Assuming the service data is a map
 
-                        if (service != null && service["state"] == "create") {
+                        if (service != null) {
                             val serviceID = snapshot.key
                             val nurseID = service["nurseID"] ?: ""
-                            val nurseLocationService = service["nurseLocationService"] ?: ""
                             val patientID = service["patientID"] ?: ""
                             val patientLocationService = service["patientLocationService"] ?: ""
                             val state = service["state"] ?: ""
-
+                            val sendHistory = service["sendHistory"] ?: ""
                             val serviceInfo = ServiceInfo(
                                 serviceID = serviceID,
                                 nurseID = nurseID,
-                                nurseLocationService = nurseLocationService,
                                 patientID = patientID,
                                 patientLocationService = patientLocationService,
-                                state = state
-                            )
-                            _serviceInfoLiveData.value = serviceInfo
-                            serviceFound = true
-                            break
-                        } else if (service != null && service["state"] == "accept") {
-                            val serviceID = snapshot.key
-                            val nurseID = service["nurseID"] ?: ""
-                            val nurseLocationService = service["nurseLocationService"] ?: ""
-                            val patientID = service["patientID"] ?: ""
-                            val patientLocationService = service["patientLocationService"] ?: ""
-                            val state = service["state"] ?: ""
-
-                            val serviceInfo = ServiceInfo(
-                                serviceID = serviceID,
-                                nurseID = nurseID,
-                                nurseLocationService = nurseLocationService,
-                                patientID = patientID,
-                                patientLocationService = patientLocationService,
-                                state = state
+                                state = state,
+                                sendHistory = sendHistory
                             )
                             _serviceInfoLiveData.value = serviceInfo
                             serviceFound = true
@@ -102,6 +78,7 @@ class HomeViewModel @Inject constructor(private val databaseService: DatabaseSer
             }
         })
     }
+
 
     fun updateState(serviceID: String) {
         databaseService.updateStateService(serviceID, "finalized").addOnCompleteListener {
