@@ -167,7 +167,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 }
 
                 override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
-                    Snackbar.make(requireView(),p0!!.permissionName+" Permiso necesario",
+                    Snackbar.make(requireView(),"Permiso de ubicación necesario",
                         Snackbar.LENGTH_LONG).show()
                 }
 
