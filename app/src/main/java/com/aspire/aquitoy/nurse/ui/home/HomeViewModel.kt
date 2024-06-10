@@ -18,8 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val databaseService: DatabaseService, private val context: Context): ViewModel() {
 
-    private val _serviceInfoLiveData = MutableLiveData<ServiceInfo>()
-    val serviceInfoLiveData: LiveData<ServiceInfo> = _serviceInfoLiveData
+    private val _serviceInfoListLiveData = MutableLiveData<List<ServiceInfo>>()
+    val serviceInfoListLiveData: LiveData<List<ServiceInfo>> = _serviceInfoListLiveData
 
 
     fun createToken() {
@@ -36,22 +36,21 @@ class HomeViewModel @Inject constructor(private val databaseService: DatabaseSer
         serviceReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // Print the data structure for debugging
                     Log.d("Service", "DataSnapshot: ${dataSnapshot.value}")
 
-                    var serviceFound = false // Flag to track if a "create" service is found
+                    val serviceList = mutableListOf<ServiceInfo>()
+
                     for (snapshot in dataSnapshot.children) {
-                        // Access service data based on actual data structure
-                        val service = snapshot.getValue<Map<String, String>>() // Assuming the service data is a map
+                        val service = snapshot.getValue<Map<String, String>>()
+                        val serviceID = snapshot.key
+                        val nurseID = service?.get("nurseID") ?: ""
+                        val patientID = service?.get("patientID") ?: ""
+                        val patientLocationService = service?.get("patientLocationService") ?: ""
+                        val state = service?.get("state") ?: ""
+                        val sendHistory = service?.get("sendHistory") ?: ""
 
                         if (service != null) {
-                            val serviceID = snapshot.key
-                            val nurseID = service["nurseID"] ?: ""
-                            val patientID = service["patientID"] ?: ""
-                            val patientLocationService = service["patientLocationService"] ?: ""
-                            val state = service["state"] ?: ""
-                            val sendHistory = service["sendHistory"] ?: ""
-                            val serviceInfo = ServiceInfo(
+                            val serviceInfoModel = ServiceInfo(
                                 serviceID = serviceID,
                                 nurseID = nurseID,
                                 patientID = patientID,
@@ -59,13 +58,13 @@ class HomeViewModel @Inject constructor(private val databaseService: DatabaseSer
                                 state = state,
                                 sendHistory = sendHistory
                             )
-                            _serviceInfoLiveData.value = serviceInfo
-                            serviceFound = true
-                            break
+                            serviceList.add(serviceInfoModel)
                         }
                     }
 
-                    if (!serviceFound) {
+                    if (serviceList.isNotEmpty()) {
+                        _serviceInfoListLiveData.value = serviceList
+                    } else {
                         Log.d("Service", "No service found")
                     }
                 } else {
@@ -83,7 +82,7 @@ class HomeViewModel @Inject constructor(private val databaseService: DatabaseSer
     fun updateState(serviceID: String) {
         databaseService.updateStateService(serviceID, "finalized").addOnCompleteListener {
             if(it.isSuccessful) {
-                databaseService.updateState(true).addOnCompleteListener {
+                databaseService.updateState("OK").addOnCompleteListener {
                     if (it.isSuccessful) {
                         Toast.makeText(context, "Servicio finalizado", Toast.LENGTH_SHORT).show()
                     }

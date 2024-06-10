@@ -259,43 +259,44 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     private fun initListeners(coordinates: LatLng) {
         homeViewModel.getService()
-        homeViewModel.serviceInfoLiveData.observe(viewLifecycleOwner) { serviceInfo ->
-            val patientLocationServiceString = serviceInfo.patientLocationService
-            val coordinatesPatient = patientLocationServiceString?.split(",") ?: listOf("0.0", "0.0")
-            val latitude = coordinatesPatient[0].toDoubleOrNull() ?: 0.0
-            val longitude = coordinatesPatient[1].toDoubleOrNull() ?: 0.0
-            val patientLocationLatLng = LatLng(latitude, longitude)
-            Log.d("SERVICE","${serviceInfo.state}")
-            if (serviceInfo.state == "create") {
-                showBottomSheet(serviceInfo.serviceID)
-            } else if (serviceInfo.state == "accept") {
-                start = "${coordinates.longitude}, ${coordinates.latitude}"
-                end = "${patientLocationLatLng.longitude}, ${patientLocationLatLng.latitude}"
-                poly?.remove()
-                if (poly != null) {
-                    poly = null
-                }
-                if (::map.isInitialized) {
-                    map.addMarker(MarkerOptions()
-                        .position(LatLng(patientLocationLatLng.latitude, patientLocationLatLng
-                            .longitude))
-                        .flat(true)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.icons_location_person)))
-                    createRoute()
-                    _binding!!.btnService.visibility = View.VISIBLE
-                    _binding!!.btnService.setOnClickListener {
-                        homeViewModel.updateState(serviceInfo.serviceID!!)
-                        showHistory(serviceInfo.serviceID)
-                        serviceInfo.state = "finalized"
-                        poly?.remove()
-                        map.clear()
-                        _binding!!.btnService.visibility = View.INVISIBLE
-                        init()
+        homeViewModel.serviceInfoListLiveData.observe(viewLifecycleOwner) { serviceInfo ->
+            serviceInfo.forEach { serviceInfoModel ->
+                val patientLocationServiceString = serviceInfoModel.patientLocationService
+                val coordinatesPatient = patientLocationServiceString?.split(",") ?: listOf("0.0", "0.0")
+                val latitude = coordinatesPatient[0].toDoubleOrNull() ?: 0.0
+                val longitude = coordinatesPatient[1].toDoubleOrNull() ?: 0.0
+                val patientLocationLatLng = LatLng(latitude, longitude)
+                Log.d("SERVICE","${serviceInfoModel.state}")
+                if (serviceInfoModel.state == "create") {
+                    showBottomSheet(serviceInfoModel.serviceID)
+                } else if (serviceInfoModel.state == "accept") {
+                    start = "${coordinates.longitude}, ${coordinates.latitude}"
+                    end = "${patientLocationLatLng.longitude}, ${patientLocationLatLng.latitude}"
+                    poly?.remove()
+                    if (poly != null) {
+                        poly = null
                     }
-                }
-            }else if (serviceInfo.state == "finalized") {
-                if(serviceInfo.sendHistory != "OK") {
-                    showHistory(serviceInfo.serviceID)
+                    if (::map.isInitialized) {
+                        map.addMarker(MarkerOptions()
+                            .position(LatLng(patientLocationLatLng.latitude, patientLocationLatLng
+                                .longitude))
+                            .flat(true)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.icons_location_person)))
+                        createRoute()
+                        _binding!!.btnService.visibility = View.VISIBLE
+                        _binding!!.btnService.setOnClickListener {
+                            homeViewModel.updateState(serviceInfoModel.serviceID!!)
+                            showHistory(serviceInfoModel.serviceID)
+                            serviceInfoModel.state = "finalized"
+                            poly?.remove()
+                            map.clear()
+                            _binding!!.btnService.visibility = View.INVISIBLE
+                        }
+                    }
+                }else if (serviceInfoModel.state == "finalized") {
+                    if(serviceInfoModel.sendHistory != "OK") {
+                        showHistory(serviceInfoModel.serviceID)
+                    }
                 }
             }
         }
@@ -305,7 +306,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         if (!isBottomSheetVisible) {
             val existingFragment = childFragmentManager.findFragmentByTag(ButtomSheetService.TAG)
             if (existingFragment == null) {
-                val bottomSheet = ButtomSheetService(serviceID!!)
+                val bottomSheet = ButtomSheetService(serviceID ?: "")
+                bottomSheet.isCancelable = false
                 bottomSheet.show(childFragmentManager, ButtomSheetService.TAG)
                 isBottomSheetVisible = true
             } else {

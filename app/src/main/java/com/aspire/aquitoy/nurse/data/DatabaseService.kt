@@ -48,7 +48,7 @@ context: Context) {
             }
     }
 
-    fun updateState(asset: Boolean): Task<Void> {
+    fun updateState(asset: String): Task<Void> {
         val nurseID = firebaseClient.auth.currentUser!!.uid
         val nurseInfoRef = getNurseInfoRef()
         return nurseInfoRef.child(nurseID).child("state").setValue(asset)

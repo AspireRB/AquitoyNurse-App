@@ -45,18 +45,16 @@ class ButtomSheetService(private val serviceID: String) : BottomSheetDialogFragm
     private fun acceptService(serviceID: String) {
         databaseService.updateStateService(serviceID, "accept").addOnCompleteListener {
             if(it.isSuccessful) {
-                databaseService.updateState(false).addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        dismissBottomSheet()
-                        databaseService.initialSendHistoryService(serviceID).addOnCompleteListener {
-                            if (it.isSuccessful){
-                                Log.d("HistoryInitial", "OK")
-                            } else {
-                                Log.d("HistoryInitial", "NO OK")
-                            }
+                if (it.isSuccessful) {
+                    dismissBottomSheet()
+                    databaseService.initialSendHistoryService(serviceID).addOnCompleteListener {
+                        if (it.isSuccessful){
+                            Log.d("HistoryInitial", "OK")
+                        } else {
+                            Log.d("HistoryInitial", "NO OK")
                         }
-                        Toast.makeText(context, "Servicio aceptado", Toast.LENGTH_SHORT).show()
                     }
+                    Toast.makeText(context, "Servicio aceptado", Toast.LENGTH_SHORT).show()
                 }
             } else {
                 Toast.makeText(context, "No se pudo aceptar el servicio", Toast.LENGTH_SHORT)
@@ -68,7 +66,7 @@ class ButtomSheetService(private val serviceID: String) : BottomSheetDialogFragm
     private fun declineService(serviceID: String) {
         databaseService.updateStateService(serviceID, "decline").addOnCompleteListener {
             if(it.isSuccessful) {
-                databaseService.updateState(true).addOnCompleteListener {
+                databaseService.updateState("OK").addOnCompleteListener {
                     if (it.isSuccessful) {
                         dismissBottomSheet()
                         Toast.makeText(context, "Servicio cancelado", Toast.LENGTH_SHORT).show()
